@@ -78,7 +78,7 @@
 
 ### Chain Id (Network Id)
 
-- Each blockchain has a unique chain Id.
+- Each EVM based blockchain has a unique chain Id.
 
 ### Creating a transaction yourself
 
@@ -119,7 +119,51 @@
 - To verify, Etherscan compiles the source code and generates binary data and abi.
 - Then it compares the binary data to the contract's binary data.
 - If binary data matches, it is proved that the source code is actually correct.
-- However, you can also do the same verification programmatically using API provided by Etherscan.
+- However, you can also do the same verification through Command Line and also programmatically using
+  API provided by Etherscan.
+
+### Verify Contract on Etherscan
+
+- There is a plugin called @nomiclabs/hardhat-etherscan
+- This plugin provides a task called verify. You can run the task from command line or from the code itself.
+- You need to set a field called "etherscan" and provide the API key from etherscan to verify yourself while doing
+  API calls.
+- This plugin requires the information about your current network(so that it can hit the right etherscan API),
+  contract constructor's arguments (etherscan passes the arguments to the contract and generates byte code) and
+  contracts memory location (etherscan needs it so that bytecode can be verified against the contract at this address).
+- all other field required by etherscan is automatically filled by the plugin.
+- while doing programmatically, you need to use run() function. This function can be used to invoke any task from the
+  code just like a command line.
+- You need to call a subtask called "verify" inside the task "verify". so run("verify:verify")
+- The reason why you need to pass subtask is that you can also verify individual things like compiler version etc.
+  So, there are many sub-tasks. "verify" subtask verifies entire contract.
+- the second parameter will be address of the contract and constructor arguments. In this case, network is automatically
+  detected.
+
+##### How does plugin works
+
+- The plugin will fetch the byte code present at the address. Then it will compare this byte code against all the
+  byte code present in the project.
+- Once the byte code is matched, it can know other information of the byte code like Contract Source code,
+  Contract Name, compiler version etc.
+- After getting all the information, plugin first tries to verify the contract by deploying it in local hardhat
+  blockchain. If the contract can be verified locally, that means all the information have been fetched properly.
+  This way, it is guaranteed that verification won't fail when deployed to Etherscan.
+- Now the plugin will hit EtherScan's API.
+
+##### additional information about working with hardhat-etherscan plugin
+
+- Whenever you deploy the contract to local blockchain, it doesn't make sense to actually verify your contract.
+- You can check this information using the network global variable.
+
+### network global variable
+
+- network is the global variable which gives information about the current network in which hardhat is running.
+- this object has a property called config. config object also has all the fields present in
+  hardhat.config for the current network i.e. url, accounts and chainID.
+- after we deploy the contract in a test/main network, we should wait for few blocks before verifying the contract.
+- this is because etherscan might not know about the contract yet. So, you should wait for few blocks to be mined.
+- Till that time, etherscan will be updated about your contract information.
 
 ### Hardhat
 
@@ -147,18 +191,52 @@
 - Everything in Hardhat is defined as a task.
 - Everytime you run Hardhat from command line, you are basically running a hardhat task.
 - Hardhat comes with predefined tasks. You can extend those tasks by installing plugins.
-- A task can call other task. So, there are a lot of plugins available which combines the work of multiple task into 
+- A task can call other task. So, there are a lot of plugins available which combines the work of multiple task into
   single.
 - There is a task called compile. this tasks compiles all the contracts inside the contracts' folder.
 - There is a task called test. this tasks runs all the tests inside the test folder.
 - There is a task called run. this tasks runs user defined scripts.
-  - First, it compiles all the contracts in the project.
-  - Then it runs the user defined script.
-  - The run task will also set HRE (Hardhat Runtime Environment) as a global variable for the script. 
-  So, you don't need to import it. 
-  - However, if you are running the script as a standalone file, you need to import hre.
+    - First, it compiles all the contracts in the project.
+    - Then it runs the user defined script.
+    - The run task will also set HRE (Hardhat Runtime Environment) as a global variable for the script.
+      So, you don't need to import it.
+    - However, if you are running the script as a standalone file, you need to import hre.
+
+#### hardhat.config.js
+
+- This file serves as the entry point for all hardhat related functionalities.
+- This file determines the configuration which will be used to run the scripts.
+- This file is extremely customizable.
+- When we install some plugins, they might require you to add few fields in this file.
+- Those fields are then used by the tasks to run our scripts in a special way.
+
+#### hardhat networks
+
+- When running a script, we can specify hardhat to use a certain blockchain.
+- whenever we don't specify a certain blockchain hardhat uses the value present in "defaultNetwork" key
+  from hardhat.config.js. if this key is not present, hardhat automatically uses local hardhat network.
+- to add new networks, we create a key called "networks". The key will contain multiple key value pairs.
+- The key will be the network name and value will contain 3 properties. RPC Url, chainId and accounts.
+- accounts will be a array containing multiple Private Keys. We can use any private key we want while
+  deploying within that blockchain. By default, first private key(index 0) is used.
+
+#### local hardhat network
+
 - By default, hardhat spins up a local Hardhat blockchain network whenever it is run.
 - The network is closed whenever the project finishes executing.
-- However, you can spin up a local Hardhat blockchain network in a standalone way which runs for as long as you want. 
-  - The network will use JSON-RPC Interface.
-  - You can connect to this network using providers like MetaMask or even a Dapp frontend.
+- However, you can spin up a local Hardhat blockchain network in a standalone way which runs for as long as you want.
+    - The network will use JSON-RPC Interface.
+    - You can connect to this network using providers like MetaMask or even a Dapp frontend.
+
+- whenever you don't specify the network while running a script, hardhat uses local hardhat network.
+- In such cases, you don't even need to pass your Private key and RPC Url. The RPC Url is fixed,
+  and it also uses a default Private key in such case
+
+#### hardhat-ethers
+
+- hardhat uses ethers behind the scenes to perform deployments. However, hardhat has added additional functionality
+  on top of ethers and created their own package called hardhat-ethers. This allows hardhat to keep track of all
+  the deployments done by ethers
+- we can just use ethers package directly but then hardhat won't know about any of the deployments.
+
+
