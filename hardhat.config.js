@@ -2,6 +2,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 require("./tasks/blockNumber");
 require("hardhat-gas-reporter");
+require("solidity-coverage");
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY;
@@ -32,6 +33,7 @@ module.exports = {
     noColors: true,
     currency: "USD",
     coinmarketcap: COINMARKET_API_KEY,
+    // token: "MATIC",
   },
   solidity: "0.8.17",
 };

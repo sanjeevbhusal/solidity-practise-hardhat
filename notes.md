@@ -274,3 +274,15 @@
   ethereum rate.
 - to do this, the extension works with coinmarketcap. So, we need a API key from coinmarketcap.
 - we can also output the result in a file.
+- the extension gets the total gas used and multiplies it with gwei per gas.(total gas used * gwei per gas).
+- Then it checks the price of that gwei for ethereum blockchain (default) using API call.
+- we can also change the blockchain.
+
+#### solidity coverage
+
+- this extension goes through all our tests and determines the functions we have tested and not tested from our
+  solidity contract file.
+- this can be a real help to know what solidity code have we not tested.
+- to run this command run `npx hardhat coverage`
+- this extension will run all the tests and generate a detailed coverage report in terminal.
+- this extension also generates a file `coverage.json` which is a detailed version of the terminal's report.
