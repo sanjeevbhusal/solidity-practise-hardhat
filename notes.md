@@ -193,7 +193,7 @@
 - Hardhat comes with predefined tasks. You can extend those tasks by installing plugins.
 - A task can call other task. So, there are a lot of plugins available which combines the work of multiple task into
   single.
-- There is a task called compile. this tasks compiles all the contracts inside the contracts' folder.
+- There is a task called compile. this tasks compiles all the contracts inside the contracts folder.
 - There is a task called test. this tasks runs all the tests inside the test folder.
 - There is a task called run. this tasks runs user defined scripts.
     - First, it compiles all the contracts in the project.
@@ -223,10 +223,18 @@
 #### local hardhat network
 
 - By default, hardhat spins up a local Hardhat blockchain network whenever it is run.
-- The network is closed whenever the project finishes executing.
+- The network can be used for any purpose such as deploying a contract, interacting with the contract, changing the
+  state of the blockchain etc.
+- But the network is closed whenever the project finishes executing. All data is also lost.
 - However, you can spin up a local Hardhat blockchain network in a standalone way which runs for as long as you want.
     - The network will use JSON-RPC Interface.
     - You can connect to this network using providers like MetaMask or even a Dapp frontend.
+    - The network has 20 accounts which come with 10000ETH each.
+    - You can use this local node like Ganache.
+    - this network is often called localhost and has same chainID 31337 as hardhat network.
+- you can interact with all hardhat's functionality directly from terminal.
+- run command `npx hardhat console --network localhost`. This creates a interactive shell inside terminal where you can
+  type any hardhat commands. the entire hardhat module is already imported in the shell.
 
 - whenever you don't specify the network while running a script, hardhat uses local hardhat network.
 - In such cases, you don't even need to pass your Private key and RPC Url. The RPC Url is fixed,
@@ -239,4 +247,30 @@
   the deployments done by ethers
 - we can just use ethers package directly but then hardhat won't know about any of the deployments.
 
+#### custom-hardhat-tasks
 
+- while creating a custom task, it is a common approach to create a folder called tasks and put all user defined task in
+  that folder
+- a task interacts with different features inside the hardhat package. So, while defining a task, user has access to
+  hardhat runtime environment (hre). This object is same as `const hardhat = require("hardhat").`
+- every task has to be imported in hardhat config file for hardhat to recognize the task
+- both task and scripts can basically do everything. you can use either scripts or task. it is a personal preference.
+- task suits better for plugins whereas scripts suit better for local development.
+
+#### hardhat-tests
+
+- tests can be written in either solidity or any other modern programming language like Javascript.
+- Javascript gives more flexibility for writing tests. It also already has libraries that makes our job really easy.
+- hardhat comes with a testing library called mocha to test our code.
+
+#### hardhat-gas-reporter
+
+- we can actually check how much gas does it take to run a function in our smart contract.
+- there is a extension called hardhat-gas-reporter which does this.
+- this extension works automatically with all our tests and figure out how much gas each function call takes.
+- we have to configure hardhat config file for this extension to run.
+
+- we can also have this extension display the actual money in USD (for all the gas used) according to current USD to
+  ethereum rate.
+- to do this, the extension works with coinmarketcap. So, we need a API key from coinmarketcap.
+- we can also output the result in a file.

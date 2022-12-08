@@ -1,0 +1,10 @@
+const contractFactory = await ethers.getContractFactory("SimpleStorage");
+exit
+exit()
+zombies_length
+let zombies_length = await contract.totalZombies();
+const transactionResponse = await contract.addZombie(1, "sanjeev");
+ const contract = await contractFactory.deploy();
+const contractFactory = await ethers.getContractFactory("SimpleStorage");
+await contractFactory.deploy()
+const contractFactory = await ethers.getContractFactory("SimpleStorage")

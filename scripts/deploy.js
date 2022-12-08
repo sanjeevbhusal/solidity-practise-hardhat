@@ -7,13 +7,16 @@ async function main() {
   const contract = await contractFactory.deploy();
   await contract.deployed();
 
-  if (
-    network.config.chainId !== 31337 &&
-    process.env.ETHERSCAN_GOERLI_API_KEY
-  ) {
+  if (network.config.chainId === 5 && process.env.ETHERSCAN_GOERLI_API_KEY) {
     await contract.deployTransaction.wait(5);
     await verify(contract.address, []);
   }
+
+  const transactionResponse = await contract.addZombie(1, "sanjeev");
+  await transactionResponse.wait(1);
+
+  let zombies_length = await contract.totalZombies();
+  console.log(zombies_length.toString());
 }
 
 async function verify(contractAddress, constructorArguments) {
@@ -38,4 +41,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-//9: 06: 38
+//9: 18: 38
