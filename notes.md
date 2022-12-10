@@ -1,8 +1,12 @@
+### readme template
+
+there is a GitHub repository called best-readme-template which can be used as a template while creating readme.
+
 # RPC URL
 
 - There has to be some nodes which are taking transactions, verifying it, adding it to the next block and finally
   adding it to blockchain.
-- These Nodes expose an RPC URL (just like a API). User have to send transactions request to this RPC URL.
+- These Nodes expose an RPC URL (just like an API). User have to send transactions request to this RPC URL.
   You can do this via code or use third party providers like metamask.
 - Whenever you create a transaction, metamask will send the details of the transaction to a particular node in
   that network. It does it via RPC URL exposed by that Node.
@@ -14,7 +18,7 @@
 
 ## JSON RPC URL CONNECTION
 
-- every Node which exposes a RPC Url has implemented few methods. By doing a API call with library like "axios",
+- every Node which exposes an RPC Url has implemented few methods. By doing an API call with library like "axios",
   we can get any information of the blockchain.
 
 - The information about methods available and sending in the correct format is available at:
@@ -76,14 +80,14 @@
 - Nonce, when talking about Wallets talks about the unique number associated with each transaction.
 - wallet.getTransactionCount() gives the current nonce number of the blockchain.
 
-### Chain Id (Network Id)
+### Chain I'd (Network I'd)
 
 - Each EVM based blockchain has a unique chain Id.
 
 ### Creating a transaction yourself
 
 - While deploying a contract using ethers.js, a lot of information about the transaction such as nonce, gasPrice,
-  gasLimit, chainId etc are filled automatically.
+  gasLimit, chainId etc. are filled automatically.
 - However, we can create our own transaction object by specifying all that information and use that.
 
 ### Contract Object
@@ -101,7 +105,7 @@
 
 - Alchemy has a node as a service.
 - It allows us to connect to any blockchain that they support.
-- While creating a application on Alchemy, we can choose the blockchain, and we will get a RPC URL.
+- While creating an application on Alchemy, we can choose the blockchain, and we will get an RPC URL.
 - The RPC URL is a connection to a node run by Alchemy. The node will process our transaction and add it to the
   blockchain
 - We also need to have an account on that blockchain in order to sign transactions.
@@ -174,8 +178,8 @@
 - We have to constantly change our RPC Url and Private key.
 - We don't have any testing facility from Ethers
 - Besides, we have to also write a lot of code ourselves.
-    - First we have to compile our code.
-    - Then get the abi and binary data and create a contract Factory.
+  - First we have to compile our code.
+  - Then get the abi and binary data and create a contract Factory.
 - You can absolutely work with just ethers.js to interact with the smart contract but HardHat provides a more robust way
   to achieve the same result.
 
@@ -193,14 +197,14 @@
 - Hardhat comes with predefined tasks. You can extend those tasks by installing plugins.
 - A task can call other task. So, there are a lot of plugins available which combines the work of multiple task into
   single.
-- There is a task called compile. this tasks compiles all the contracts inside the contracts folder.
+- There is a task called compile. this tasks compiles all the contracts inside the contracts' folder.
 - There is a task called test. this tasks runs all the tests inside the test folder.
 - There is a task called run. this tasks runs user defined scripts.
-    - First, it compiles all the contracts in the project.
-    - Then it runs the user defined script.
-    - The run task will also set HRE (Hardhat Runtime Environment) as a global variable for the script.
-      So, you don't need to import it.
-    - However, if you are running the script as a standalone file, you need to import hre.
+  - First, it compiles all the contracts in the project.
+  - Then it runs the user defined script.
+  - The run task will also set HRE (Hardhat Runtime Environment) as a global variable for the script.
+    So, you don't need to import it.
+  - However, if you are running the script as a standalone file, you need to import hre.
 
 #### hardhat.config.js
 
@@ -217,7 +221,7 @@
   from hardhat.config.js. if this key is not present, hardhat automatically uses local hardhat network.
 - to add new networks, we create a key called "networks". The key will contain multiple key value pairs.
 - The key will be the network name and value will contain 3 properties. RPC Url, chainId and accounts.
-- accounts will be a array containing multiple Private Keys. We can use any private key we want while
+- accounts will be an array containing multiple Private Keys. We can use any private key we want while
   deploying within that blockchain. By default, first private key(index 0) is used.
 
 #### local hardhat network
@@ -227,13 +231,13 @@
   state of the blockchain etc.
 - But the network is closed whenever the project finishes executing. All data is also lost.
 - However, you can spin up a local Hardhat blockchain network in a standalone way which runs for as long as you want.
-    - The network will use JSON-RPC Interface.
-    - You can connect to this network using providers like MetaMask or even a Dapp frontend.
-    - The network has 20 accounts which come with 10000ETH each.
-    - You can use this local node like Ganache.
-    - this network is often called localhost and has same chainID 31337 as hardhat network.
+  - The network will use JSON-RPC Interface.
+  - You can connect to this network using providers like MetaMask or even a Dapp frontend.
+  - The network has 20 accounts which come with 10000ETH each.
+  - You can use this local node like Ganache.
+  - this network is often called localhost and has same chainID 31337 as hardhat network.
 - you can interact with all hardhat's functionality directly from terminal.
-- run command `npx hardhat console --network localhost`. This creates a interactive shell inside terminal where you can
+- run command `npx hardhat console --network localhost`. This creates an interactive shell inside terminal where you can
   type any hardhat commands. the entire hardhat module is already imported in the shell.
 
 - whenever you don't specify the network while running a script, hardhat uses local hardhat network.
@@ -266,15 +270,15 @@
 #### hardhat-gas-reporter
 
 - we can actually check how much gas does it take to run a function in our smart contract.
-- there is a extension called hardhat-gas-reporter which does this.
+- there is an extension called hardhat-gas-reporter which does this.
 - this extension works automatically with all our tests and figure out how much gas each function call takes.
 - we have to configure hardhat config file for this extension to run.
 
 - we can also have this extension display the actual money in USD (for all the gas used) according to current USD to
   ethereum rate.
-- to do this, the extension works with coinmarketcap. So, we need a API key from coinmarketcap.
+- to do this, the extension works with coinmarketcap. So, we need an API key from coinmarketcap.
 - we can also output the result in a file.
-- the extension gets the total gas used and multiplies it with gwei per gas.(total gas used * gwei per gas).
+- the extension gets the total gas used and multiplies it with gwei per gas.(total gas used \* gwei per gas).
 - Then it checks the price of that gwei for ethereum blockchain (default) using API call.
 - we can also change the blockchain.
 
@@ -286,3 +290,140 @@
 - to run this command run `npx hardhat coverage`
 - this extension will run all the tests and generate a detailed coverage report in terminal.
 - this extension also generates a file `coverage.json` which is a detailed version of the terminal's report.
+
+#### solhint || what is linting ?
+
+- linting is the process of finding errors in the code.
+- a linter is a program that analyzes the code and finds potential bugs.
+- a linter can also do formatting in some cases.
+- eslint is an example of a linter that works with Javascript.
+- solhint is an example of a linter that works with solidity.
+- solhint needs a config file `.solhint.json` which can be used for customizing solhint's behaviour.
+- you can create a file called `.solhintignore` to ignore dependency contracts.
+- you can run solhint from terminal `npx solhint contractA.sol`
+
+#### importing contracts from npm
+
+- our smart contracts can't interact with outside world. But in order to build a contract which needs real time
+  value such as current date, current eth price etc., we need to interact with outside world.
+- this is made possible by chainlink. there are several smart contracts that are already deployed by chainlink which
+  provides
+  real time values.
+- inorder to interact with those smart contracts, we need to have a reference to that contract.
+- we also need to know the available methods in that contract to call them from our code.
+- If we have access to the interface of that contract, we can get the memory address of the contract.
+- We will also know all the methods available in that contract. The implementation of those methods will not be present
+  as it is an interface.
+- these interfaces are available as `@chainlink/contracts` npm packages.
+
+#### hardhat-deploy
+
+- there is a package called hardhat-deploy which makes deploying all our contracts really easy.
+- hardhat-deploy internally stores all the contracts that have been deployed. So, we dont need to store the contract object in a variable after deploying it.
+- This can gretly help where we have many contracts and some contract has to interact with previously deployed contract (mocks).
+- previously, we used to write a bunch of scripts and run those scripts one by one using `npx hardhat run scripts/script1`
+
+- now with this module, we get another task called `deploy`
+- this task will look for a folder called `deploy` and runs all the files inside the folder.
+- the files can be arranged in numeric format like `01-file1.js, 02-file2.js`. `01-file1.js` will run first and
+  then `02-file2.js` will run. this is useful if `file-2.js` is deploying a contract which prerequisite is deployed
+  in `file1.js`
+
+- we have to create a single function inside each of this file and export it as default.
+- each function will receive `hre` as its first argument by this extension.
+- this extension has actually modified `hre` to include other properties as well.
+- 2 new fields `getNamedAccounts` and `deployments` are added in `hre` object.
+
+- In the hardhat.config.js, each network has a accounts field. this field can contain multiple accounts.
+- Example: In Goerli test network, I might have 2 accounts. 1 might be used for deploying the contract and another
+- might be used for testing purposes.
+- Currently, this is the way my code is structured
+  ` const contractFactory = await ethers.getContractFactory('SimpleStorage'); const contract = await contractFactory.deploy();`
+- Here, hardhat automatically looks at my current network and fetches the first private key from the accounts field.
+- What if I wanted to deploy this contract with my second private key ?
+
+- that's where `getNamedAccounts` function comes into play. In `hardhat.config.js`, we need to add a key called
+  namedAccounts. This key will contain multiple accounts such as a `default account`, `user1` account etc.
+- inside each account, we can specify, which private key we want to use based on the current network.
+- network chainID maps to the private key's index
+
+- `deployments` object has 3 useful methods. `deploy` , `log` and `get`.
+- previously, in order to deply a contract, we created a contractFactory object and then called deploy method on it.
+- with `deploy` function, we just need to pass the contract name and any overrides such as from, to, constructor arguments etc.
+- with `get` function, we can pass a contract name and if that contract has been deployed, we will get that contract object.
+- `get` is generally used when we deploy a mock contract in one file and need the address of that mock contract in another file.
+
+- whenever we start a local blockchain node `npx hardhat node`, hardhat-deploy will run all files inside deploy folder `npx hardhat deploy` inside the local blockchain node. So, the local node will already have all the contracts deployed.
+
+#### mocking / mock contracts
+
+##### Problems
+
+- let's say I am making a smart contract to deploy on ethereum blockchain. the contract
+  depends on real time value of the ethereum to USD to perform some transactions.
+- the value of ethereum will change overtime. So I cannot hardcode the current value.
+- So, I use chainlink contracts that are already deployed on ethereum blockchain to get the real time value of
+  ethereum to USD before for every transaction.
+
+- the above approach works perfectly and that is how you should write your smart contracts.
+- but what do you do while you are testing your smart contracts ?
+- you will use test nets such as goerli. But your code will error out because the chainlink contract was available on
+  ethereum blockchain, not on goerli.
+
+- so now, you have to search if there is a chainlink contract in goerli network for the same purpose.
+- if yes, you can use that address to get the value and your program works perfectly.
+
+- but while developing your smart contract, you will end up deploying and testing your contract multiple times.
+- performing transactions on testnet takes a lot of time. So, this option is not suitable.
+- for the same reason, we use local network (hardhat node, ganache etc.) for development purposes.
+
+- but we do not have any chainlink contracts deployed on the local network. so, our code will again error out.
+- the only option is to hardcode the ETH -> USD rate in your code.
+- but if we do so, we have to change the value very frequently. And we might mistakenly deploy the same contract in
+  main net. this will cause our contract to process incorrect transactions.
+
+##### Solution
+
+- the solution to this approach is mocking.
+- a program(A) might have dependency on output of another program(B), to run successfully.
+- But what happens if for some reason we are unable to access program B while we are trying to test program A ?
+- We have to create a new program (C) while simulates the behaviour of program B.
+- this process of creating a new object (program C) which simulates/mocks the behaviour of a real object (program B)
+  is known as mocking.
+
+- In blockchain, a smart contract (A) might depend on output another contract (B).
+- We need to test our smart contract on multiple blockchain networks (local network, test network) before we actually
+  deploy it to main network.
+- all these networks might not have the contract B. In such cases, we have to create and deploy a new contract (C) such
+- that C mocks all the behaviour/functionalities of contract B.
+
+- In this case, we want to deploy a contract which simulates the behaviour of chainlink's ETH -> USD contract.
+- this way when we test the contract in local development mode, the contract works without any error.
+- while deploying the same contract on test net or main net, we just change the address of the dependency contract.
+- we do not need to perform mocking on test net / main net if the contract already exists in the network.
+
+#### Performing Mocking
+
+- we generally create a file like `00-deployMocks.js` which is used to deploy all necessary mocks.
+- first, we need to create a solidity file which acts as a mock `mockEthUsdAggreator.sol`.
+
+##### first approach
+
+- we can go to chainlink github repository and simply find the contract implementing ETH -> USD functionality and copy paste all the code.
+- if we do this way, we also need to copy all other contracts that are imported in the contract. We might also need to fix the import statements.
+
+##### second approach
+
+- chainlink repo already comes with all the mocks for contracts which are deployed by chainlink in other blockchains.
+- instead of copying the main contract, we can also simply copy the mocks. but the problem of importing still remains.
+<!-- - The advantage here is that mocks are basically just interface -->
+
+#### third approach
+
+- we have alreasy installed chainlink package to use chainlink interfaces. This allowed us to access the contracts deployed by chainlink in main net/ test net blockchains
+- that package is the same github repository. so, instead of copying mocks, we can simply import the mock from chainlink package in our mock file (`mockEthUsdAggregator.sol`).
+- this way, we donot need to copy paste the code and also we dont need to fix any imports.
+- this approach however has an issue. The chainlink mock file might use a different compiler version than what we are using in our contracts.
+- we can fix this problem by configuring additional compiler version in hardhat.config file.
+
+- In all 3 approaches, the mock contract and all other dependent contracts will been compiled.
