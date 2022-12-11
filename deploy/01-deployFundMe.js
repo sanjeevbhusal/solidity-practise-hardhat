@@ -1,5 +1,6 @@
 const { network } = require('hardhat');
 const { networkConfiguration } = require('../helperHardhat.config');
+const { verifyContract } = require('../utils/verifyContract');
 
 const developmentChains = ['hardhat', 'localhost'];
 
@@ -24,10 +25,18 @@ module.exports = async (hre) => {
     from: deployer,
     args: [ethUsdPriceFeedAddress],
     log: true,
+    waitConfirmations: network.config.blockConfirmations || 1,
   });
 
   log('FundMe contract deployed...');
   log('-----------------------------------');
+
+  if (
+    !developmentChains.includes(currentNetwork) &&
+    process.env.ETHERSCAN_API_KEY
+  ) {
+    await verifyContract(contract.address, [ethUsdPriceFeedAddress]);
+  }
 };
 
 module.exports.tags = ['all', 'fundMe'];

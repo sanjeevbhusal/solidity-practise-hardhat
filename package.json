@@ -14,7 +14,9 @@
     "eslint": "^8.29.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "hardhat": "^2.12.2"
+    "hardhat": "^2.12.2",
+    "prettier": "^2.8.1",
+    "prettier-plugin-solidity": "^1.0.0"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",

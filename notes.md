@@ -353,7 +353,8 @@ there is a GitHub repository called best-readme-template which can be used as a 
 - with `get` function, we can pass a contract name and if that contract has been deployed, we will get that contract object.
 - `get` is generally used when we deploy a mock contract in one file and need the address of that mock contract in another file.
 
-- whenever we start a local blockchain node `npx hardhat node`, hardhat-deploy will run all files inside deploy folder `npx hardhat deploy` inside the local blockchain node. So, the local node will already have all the contracts deployed.
+- whenever we start a local blockchain node by running `npx hardhat node`, hardhat-deploy will run all files inside deploy folder i.e. it will automatically run the functionalities of `npx hardhat deploy` command.
+- So, the local node will already have all the contracts deployed.
 
 #### mocking / mock contracts
 
@@ -427,3 +428,8 @@ there is a GitHub repository called best-readme-template which can be used as a 
 - we can fix this problem by configuring additional compiler version in hardhat.config file.
 
 - In all 3 approaches, the mock contract and all other dependent contracts will been compiled.
+
+#### tags
+
+- you can include tags for a file by doing `module.exports.tags = ['all', 'fundMe']`.
+- if you run `npx hardhat deploy --tags fundMe`, only files which have `fundMe` tags will be run by hardhat
