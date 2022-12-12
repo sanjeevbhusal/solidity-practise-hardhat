@@ -1,13 +1,18 @@
 {
-  "name": "solidity-fcc-self-hardhat",
+  "name": "hardhat-project",
+  "author": "sanjeev bhusal",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "a solidity project",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat test",
+    "test:staging": "npx hardhat test --network goerli",
+    "lint": "npx solhint 'contracts/**/*.sol'",
+    "lint:fix": "npx solhint 'contracts/**/.sol --fix' ",
+    "format": "npx prettier --write .",
+    "coverage": "npx hardhat coverage",
+    "clean": "npx hardhat clean"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
