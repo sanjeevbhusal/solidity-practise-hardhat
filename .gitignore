@@ -1,5 +1,9 @@
 gasReport.txt
 coverage.json
+coverage
+typechain
+deployments
+
 
 ### Node template
 # Logs
