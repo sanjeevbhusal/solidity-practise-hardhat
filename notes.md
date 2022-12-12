@@ -515,3 +515,19 @@ there is a GitHub repository called best-readme-template which can be used as a 
 - Reading from Arrays and mappings take up a lot of gas especially if we are constantly reading and writing values in the array. (Example: in a for loop)
 - So, we generally create a new variable to store all the elements from the array only once.
 - So, we should decide if we want to save the new variable in `memory` or `Storage`.
+
+## unit test and staging/integration test
+
+- We genrally have our tests divided in 2 categories.
+
+- we write unit tests to check if a unit of our smart contract such as a single function, variable etc is working the way we expect it to work.
+- we write a lot of unit tests and run these tests a lot. So, we only run these tests in our local blockchain.
+
+- once we write unit tests and all tests work perfectly, we are ready to deploy our contract in test net.
+- once we deploy our contract in test net, we want to interact with our contracts just to be sure that multiple parts / function of the contract is perfectly with each other.
+- that's when we write staging test.
+- staging test will interact with our deployed contract and make sure our contract is working perfectly.
+- then we deploy our contract to main network.
+
+- we wont deploy our contract as we are interacting with the already deployed contract.
+- we also wont be deploying any mocks as we are on a test net which already has mocks.
