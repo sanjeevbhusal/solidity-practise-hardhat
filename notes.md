@@ -321,6 +321,8 @@ there is a GitHub repository called best-readme-template which can be used as a 
 - there is a package called hardhat-deploy which makes deploying all our contracts really easy.
 - hardhat-deploy internally stores all the contracts that have been deployed. So, we dont need to store the contract object in a variable after deploying it.
 - This can gretly help where we have many contracts and some contract has to interact with previously deployed contract (mocks).
+- hardhat deploy also keeps track if we have already deployed the contract or not. If already deployed, it simply uses the same deployed address instead of deploying again.
+- it does so by creating a folder called deployments and storing all necessary data in it.
 - previously, we used to write a bunch of scripts and run those scripts one by one using `npx hardhat run scripts/script1`
 
 - now with this module, we get another task called `deploy`
@@ -433,3 +435,83 @@ there is a GitHub repository called best-readme-template which can be used as a 
 
 - you can include tags for a file by doing `module.exports.tags = ['all', 'fundMe']`.
 - if you run `npx hardhat deploy --tags fundMe`, only files which have `fundMe` tags will be run by hardhat
+
+## optimizing solidity files for saving gas cost
+
+- how does solidity stores values ?
+- dependeing upon the type of the value, solidity has different ways to store the values
+
+### state variables
+
+- state variables are stored in a section called as `Storage`.
+- every smart contract has this `Storage` section.
+- this `Storage` section is just like a `array` where each slot is `32 bytes long`.
+
+- lets say a state variable `uint256 favouriteNumber = 25` is declared in the contract.
+- while deploying the contract, solidity knows that this `favouriteNumber` variable is a state variable.
+- now, solidity takes the `hexadecimal format `of `favouriteNumber` and `25` and stores it in the first slot in the storage array.
+
+- for dynamic values like `array` or `mapping`, solidity uses slightly different approach.
+- just like `uint256`, both array and mapping also get stored in the `32 bytes long slot`.
+- But, instead of storing values, solidity stores the `length of the array(in hexadecimal format)` and incase of mapping, `the slot is left empty`.
+- The reason why slot is left empty in case of mapping is to signal solidity that there is a mapping data structure in the contract.
+
+- **So, why dont the elements inside array or mapping gets stored in the same slot**?
+- this is because the slot can store the maximum of `32 bytes`. Both data structures are `dynamic`, so we might store `more` than 32 bytes of storage. Hence, to prevent data loss, solidity donot store the value inside this slot.
+- In case of other data structures like uint256, string etc, values never exceed 32 bytes. Hence, they can be stored within the slot.
+
+- **So, where does the elements inside array or mapping gets stored**?
+- the values are stored in a seprate places within that same `storage` section.
+- the values are passed to the `hashing` function which determines the position / place where these values will be stored.
+
+### immutable and constant variables
+
+- these variables will never change once assigned.
+- so they are embedded within the `byte code `of the contract.
+
+### memory variables
+
+- variables inside the function only exist temporarily for the lifespan of that function.
+- these variables are not part of the contract and hence shouldnot be stored in `storage` section or `byte code`.
+- they are stored in another section called `Memory`. This is like a datastructure which gets destroyed after the function has finished running
+
+## Note
+
+- even if we mark our variables as private or internal, we can still read it.
+- Anything on blockchain can be read by anyone.
+
+## gas costs
+
+- when we compile our smart contract, we get `byte code` and `opt code`.
+- solidity compiles our contract to opt code and derives `byte code` from it.
+
+- opt codes are basically collection of many commands like `PUSH1, DUP1` etc.
+- each of these commands are basically tasks, the machine will be performing.
+- to perform each of these task, machine requires different computational power.
+
+- each optcode has a fixed gasCost associated with it.
+- the total gasCost is calculated based upon these opt codes.(https://github.com/crytic/evm-opcodes)
+
+- among these opt codes, 2 optcodes that cause a lot of gas are `SLOAD and STORE`.
+- `SLOAD` is a command used to load a value from `Storage`. It costs 800 gas.
+- `SSTORE` is a command used to save a value to `Storage`. It costs 20,000 gas or even more.
+- `S` refers to Storage.
+
+## conventions
+
+- in big codebase, we might not realize if a variable is a `storage` variable or `memory` variable or `constant` variable or `immutable` variable.
+- so, as a best practise, we prepend `s` to storage variable, `i` to immutable variable, and make variable All Caps for constant variable.
+
+### saving gas
+
+- If we are reading same data multiple times from storage, we should create a local memory variable and store the value from storage in that local variable.
+
+- **Note**
+- we cannot store mappings in memory yet.
+- private and internal variables cost less gas.
+
+- **why should we mark string as memory inside the function ?**
+- strings are implemented as arrays inside solidity.
+- Reading from Arrays and mappings take up a lot of gas especially if we are constantly reading and writing values in the array. (Example: in a for loop)
+- So, we generally create a new variable to store all the elements from the array only once.
+- So, we should decide if we want to save the new variable in `memory` or `Storage`.
